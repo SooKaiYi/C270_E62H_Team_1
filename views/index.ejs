@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Bike Locator Map</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .map-card {
+      width: 800px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      padding: 20px;
+    }
+
+    .map-card h1 {
+      text-align: center;
+      margin-bottom: 15px;
+      font-size: 22px;
+      color: #333;
+    }
+
+    .search-container {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .search-container input {
+      flex: 1;
+      padding: 12px 15px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: border-color 0.3s;
+    }
+
+    .search-container input:focus {
+      outline: none;
+      border-color: #4CAF50;
+    }
+
+    .search-container button {
+      padding: 12px 25px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    .search-container button:hover {
+      background-color: #45a049;
+    }
+
+    .search-results {
+      margin-top: 10px;
+      padding: 10px;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      display: none;
+      font-size: 13px;
+      color: #333;
+    }
+
+    .search-results.show {
+      display: block;
+    }
+
+    #map {
+      height: 500px;
+      width: 100%;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+  <div class="map-card">
+    <h1>Bike Locator Map</h1>
+    
+    <div class="search-container">
+      <input 
+        type="text" 
+        id="searchInput" 
+        placeholder="Search for a location (e.g., Orchard, Marina Bay, Bugis)"
+      />
+      <button onclick="searchLocation()">Search</button>
+    </div>
+    
+    <div id="searchResults" class="search-results"></div>
+    
+    <div id="map"></div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    // Safe JSON injection
+    const bikeStations = JSON.parse('<%- JSON.stringify(bikeStations || []) %>');
+    let markers = [];
+
+    // Singapore bounds (southwest & northeast corners)
+    const singaporeBounds = [
+      [1.15, 103.60], // SW
+      [1.47, 104.10]  // NE
+    ];
+
+    // Initialize map with bounds restriction
+    const map = L.map('map', {
+      maxBounds: singaporeBounds,
+      maxBoundsViscosity: 1.0, // prevents dragging outside
+      minZoom: 12,
+      maxZoom: 18
+    }).setView([1.3000, 103.8000], 13);
+
+    // Add OpenStreetMap tiles
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Add markers for each station
+    bikeStations.forEach(station => {
+      const marker = L.marker([station.lat, station.lng])
+        .addTo(map)
+        .bindPopup(`<b>${station.name}</b><br>Rented bicycles here`);
+      markers.push({
+        marker: marker,
+        station: station
+      });
+    });
+
+    // Calculate distance between two coordinates (in km)
+    function calculateDistance(lat1, lng1, lat2, lng2) {
+      const R = 6371; // Earth's radius in km
+      const dLat = (lat2 - lat1) * Math.PI / 180;
+      const dLng = (lng2 - lng1) * Math.PI / 180;
+      const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLng / 2) * Math.sin(dLng / 2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      return R * c;
+    }
+
+    // Search for location and find nearest bike
+    function searchLocation() {
+      const searchInput = document.getElementById('searchInput').value.trim().toLowerCase();
+      const resultsDiv = document.getElementById('searchResults');
+
+      if (!searchInput) {
+        resultsDiv.classList.remove('show');
+        return;
+      }
+
+      // Find matching locations
+      const matchingStations = bikeStations.filter(station =>
+        station.name.toLowerCase().includes(searchInput)
+      );
+
+      if (matchingStations.length === 0) {
+        resultsDiv.innerHTML = `<strong>❌ No locations found for "${searchInput}"</strong><br>Try: Orchard, Marina Bay, or Bugis`;
+        resultsDiv.classList.add('show');
+        return;
+      }
+
+      // If there's a match, use the first one as the search location
+      const searchedLocation = matchingStations[0];
+
+      // Find the nearest bike station to the searched location
+      let nearestStation = bikeStations[0];
+      let minDistance = calculateDistance(
+        searchedLocation.lat,
+        searchedLocation.lng,
+        bikeStations[0].lat,
+        bikeStations[0].lng
+      );
+
+      bikeStations.forEach(station => {
+        const distance = calculateDistance(
+          searchedLocation.lat,
+          searchedLocation.lng,
+          station.lat,
+          station.lng
+        );
+        if (distance < minDistance) {
+          minDistance = distance;
+          nearestStation = station;
+        }
+      });
+
+      // Pan map to the searched location
+      map.setView([searchedLocation.lat, searchedLocation.lng], 15);
+
+      // Show results
+      const distanceText = minDistance < 1 ? `${(minDistance * 1000).toFixed(0)}m` : `${minDistance.toFixed(2)}km`;
+      resultsDiv.innerHTML = `
+        <strong>📍 Found: ${searchedLocation.name}</strong><br>
+        <strong>🚲 Nearest bike rental: ${nearestStation.name}</strong><br>
+        Distance: ${distanceText}
+      `;
+      resultsDiv.classList.add('show');
+
+      // Open popup on nearest station marker
+      const nearestMarkerObj = markers.find(m => m.station.name === nearestStation.name);
+      if (nearestMarkerObj) {
+        nearestMarkerObj.marker.openPopup();
+      }
+    }
+
+    // Allow Enter key to search
+    document.getElementById('searchInput').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        searchLocation();
+      }
+    });
+  </script>
+</body>
+</html>
+
+
