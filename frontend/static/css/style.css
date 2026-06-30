@@ -1,0 +1,83 @@
+body {
+    background-color: #f4f4f9;
+    color: #24313f;
+    font-family: Arial, sans-serif;
+}
+
+.wallet-header {
+    align-items: center;
+    display: flex;
+    gap: 16px;
+    justify-content: space-between;
+    margin-bottom: 24px;
+}
+
+.balance-card,
+.content-panel,
+.auth-panel,
+.plan-card {
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    padding: 24px;
+}
+
+.balance-card {
+    background: #2ecc71;
+    color: #ffffff;
+    text-align: center;
+}
+
+.content-panel,
+.auth-panel {
+    max-width: 760px;
+}
+
+.auth-panel {
+    margin-top: 48px;
+}
+
+.action-card {
+    background: #ffffff;
+    border: 1px solid #e5e9f0;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+    color: #24313f;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-height: 110px;
+    padding: 20px;
+    text-decoration: none;
+}
+
+.action-card:hover {
+    border-color: #3498db;
+    color: #1b6ca8;
+}
+
+.plan-card {
+    border: 2px solid transparent;
+    text-align: center;
+}
+
+.plan-card:hover {
+    border-color: #3498db;
+}
+
+.plan-price {
+    color: #3498db;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+@media (max-width: 576px) {
+    .wallet-header {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .wallet-header .btn {
+        width: 100%;
+    }
+}

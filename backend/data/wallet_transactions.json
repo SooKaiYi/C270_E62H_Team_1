@@ -1,0 +1,110 @@
+[
+    {
+        "transactionId": 1,
+        "userId": 1,
+        "type": "Top Up",
+        "amount": 20,
+        "balanceAfter": 20,
+        "status": "Success",
+        "timestamp": "2026-06-30T07:00:00.000Z"
+    },
+    {
+        "transactionId": 2,
+        "userId": 1,
+        "type": "Single Trip",
+        "amount": 2,
+        "balanceAfter": 18,
+        "status": "Success",
+        "timestamp": "2026-06-30T07:56:45.911Z"
+    },
+    {
+        "transactionId": 3,
+        "userId": 1,
+        "type": "Day Pass",
+        "amount": 10,
+        "balanceAfter": 8,
+        "status": "Success",
+        "timestamp": "2026-06-30T07:56:50.914Z"
+    },
+    {
+        "transactionId": 4,
+        "userId": 1,
+        "type": "Top Up",
+        "amount": 20,
+        "balanceAfter": 28,
+        "status": "Success",
+        "timestamp": "2026-06-30T07:56:56.814Z"
+    },
+    {
+        "transactionId": 5,
+        "userId": 1,
+        "type": "Top Up",
+        "amount": 10,
+        "balanceAfter": 38,
+        "status": "Success",
+        "timestamp": "2026-06-30T07:57:03.341Z"
+    },
+    {
+        "transactionId": 6,
+        "userId": 1,
+        "type": "Single Trip",
+        "amount": 2,
+        "balanceAfter": 36,
+        "status": "Success",
+        "timestamp": "2026-06-30T07:57:13.012Z"
+    },
+    {
+        "transactionId": 7,
+        "userId": 1,
+        "type": "Day Pass",
+        "amount": 10,
+        "balanceAfter": 26,
+        "status": "Success",
+        "timestamp": "2026-06-30T07:57:19.574Z"
+    },
+    {
+        "transactionId": 8,
+        "userId": 1,
+        "type": "Single Trip",
+        "amount": 2,
+        "balanceAfter": 24,
+        "status": "Success",
+        "timestamp": "2026-06-30T08:01:41.641Z"
+    },
+    {
+        "transactionId": 9,
+        "userId": 1,
+        "type": "Day Pass",
+        "amount": 10,
+        "balanceAfter": 14,
+        "status": "Success",
+        "timestamp": "2026-06-30T08:01:45.044Z"
+    },
+    {
+        "transactionId": 10,
+        "userId": 1,
+        "type": "Top Up",
+        "amount": 20,
+        "balanceAfter": 34,
+        "status": "Success",
+        "timestamp": "2026-06-30T08:01:50.210Z"
+    },
+    {
+        "transactionId": 11,
+        "userId": 1,
+        "type": "Single Trip",
+        "amount": 2,
+        "balanceAfter": 32,
+        "status": "Success",
+        "timestamp": "2026-06-30T08:02:14.816Z"
+    },
+    {
+        "transactionId": 12,
+        "userId": 1,
+        "type": "Single Trip",
+        "amount": 2,
+        "balanceAfter": 30,
+        "status": "Success",
+        "timestamp": "2026-06-30T08:02:19.488Z"
+    }
+]

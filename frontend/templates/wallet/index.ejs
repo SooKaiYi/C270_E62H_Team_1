@@ -1,0 +1,77 @@
+<%- include('../partials/header') %>
+
+<section class="wallet-header">
+    <div>
+        <h1 class="h2 mb-1">My Wallet</h1>
+        <p class="text-muted mb-0">View balance, add credits, and buy ride passes.</p>
+    </div>
+    <a href="/wallet/topup" class="btn btn-success">Top Up Credits</a>
+</section>
+
+<section class="balance-card mb-4">
+    <p class="mb-2">Available Credits</p>
+    <h2 class="display-5 fw-bold mb-0"><%= formatCurrency(wallet.balance) %></h2>
+</section>
+
+<section class="row g-3 mb-4">
+    <div class="col-md-4">
+        <a class="action-card" href="/wallet/topup">
+            <span class="fw-semibold">Top Up</span>
+            <small>Add credits to your wallet</small>
+        </a>
+    </div>
+    <div class="col-md-4">
+        <a class="action-card" href="/wallet/pass">
+            <span class="fw-semibold">Buy Single Trip</span>
+            <small>Use wallet credits for one ride</small>
+        </a>
+    </div>
+    <div class="col-md-4">
+        <a class="action-card" href="/wallet/pass">
+            <span class="fw-semibold">Buy Day Pass</span>
+            <small>Ride for the day with one pass</small>
+        </a>
+    </div>
+</section>
+
+<section class="content-panel">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="h4 mb-0">Recent Transactions</h2>
+        <a href="/wallet/history" class="btn btn-outline-primary btn-sm">View All</a>
+    </div>
+
+    <% if (transactions.length === 0) { %>
+        <p class="text-muted mb-0">No transactions yet.</p>
+    <% } else { %>
+        <div class="table-responsive">
+            <table class="table align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Amount</th>
+                        <th>Balance After</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% transactions.forEach((transaction) => { %>
+                        <tr>
+                            <td><%= transaction.type %></td>
+                            <td><%= transactionSign(transaction.type) %><%= formatCurrency(transaction.amount) %></td>
+                            <td><%= formatCurrency(transaction.balanceAfter) %></td>
+                            <td>
+                                <span class="badge <%= transaction.status === 'Success' ? 'text-bg-success' : 'text-bg-danger' %>">
+                                    <%= transaction.status %>
+                                </span>
+                            </td>
+                            <td><%= formatDateTime(transaction.timestamp) %></td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+    <% } %>
+</section>
+
+<%- include('../partials/footer') %>
