@@ -13,10 +13,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // ---- In-memory "database" ----
 const vehicles = [
-  { id: 1, name: 'Compact Car', ratePerHour: 1, image: 'compact.png', seats: 4 },
-  { id: 2, name: 'SUV', ratePerHour: 2, image: 'suv.png', seats: 6 },
-  { id: 3, name: 'Motorbike', ratePerHour: 0.5, image: 'bike.png', seats: 1 },
-  { id: 4, name: 'Van', ratePerHour: 3, image: 'van.png', seats: 8 },
+  { id: 1, name: 'City Bicycle', ratePerHour: 1, image: 'bike.png', seats: 1 },
+  { id: 2, name: 'Mountain Bike', ratePerHour: 2, image: 'bike.png', seats: 1 },
+  { id: 3, name: 'Electric Bicycle', ratePerHour: 3, image: 'bike.png', seats: 1 },
+  { id: 4, name: 'Tandem Bicycle', ratePerHour: 4, image: 'bike.png', seats: 2 },
 ];
 
 let bookings = [];

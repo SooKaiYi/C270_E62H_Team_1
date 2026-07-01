@@ -6,8 +6,7 @@
 <div class="vehicle-grid">
   <% vehicles.forEach(v => { %>
     <div class="vehicle-card">
-      <div class="vehicle-icon"><%= v.name.includes('Bike') ? '🏍️' : v.name.includes('Van') ? '🚐' : v.name.includes('SUV') ? '🚙' : '🚗' %></div>
-      <h2><%= v.name %></h2>
+    <div class="vehicle-icon">🚲</div>      <h2><%= v.name %></h2>
       <p class="rate">$<%= v.ratePerHour.toFixed(2) %> / hour</p>
       <p class="seats"><%= v.seats %> seats</p>
       <a class="btn" href="/book/<%= v.id %>">Book Now</a>
