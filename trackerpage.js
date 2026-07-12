@@ -40,6 +40,30 @@ app.get('/tracker', (req, res) => {
     }
 });
 
+app.get('/leaderboard', (req, res) => {
+    if (userSession.isLoggedIn && userSession.hasRented) {
+        const leaderboardData = {
+            global: [
+                { name: 'Ava', city: 'London', distance: 142.8 },
+                { name: 'Noah', city: 'Paris', distance: 129.4 },
+                { name: userSession.name, city: 'Your City', distance: 98.6 },
+                { name: 'Mia', city: 'Berlin', distance: 87.2 },
+                { name: 'Liam', city: 'Rome', distance: 74.5 }
+            ],
+            friends: [
+                { name: userSession.name, city: 'Your City', distance: 98.6 },
+                { name: 'Sam', city: 'Madrid', distance: 61.3 },
+                { name: 'Ellie', city: 'Dublin', distance: 57.9 },
+                { name: 'Owen', city: 'Oslo', distance: 43.1 }
+            ]
+        };
+
+        res.render('leaderboard', { user: userSession, leaderboard: leaderboardData });
+    } else {
+        res.redirect('/');
+    }
+});
+
 app.get('/logout', (req, res) => {
     userSession.isLoggedIn = false;
     userSession.name = 'Placeholder Rider';
